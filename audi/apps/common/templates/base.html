@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="{{ locale_language_id }}"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang="{{ locale_language_id }}"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang="{{ locale_language_id }}"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="{{ locale_language_id }}"> <!--<![endif]-->
+<head>
+    <title>{% block title %}{{ app_name }}{% endblock %}</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="keywords" content="">
+    <meta name="generator" content="Appudi">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block meta %}{% endblock %}
+
+    {% block css %}{% endblock %}
+</head>
+<body>
+    <!--[if lt IE 9]>
+        <p class=chromeframe>{% trans %}Your browser is <em>ancient!</em>{% endtrans %}
+        {% trans %}<a href="http://browsehappy.com/">Upgrade to a different browser</a>
+        to experience this site.{% endtrans %}</p>
+    <![endif]-->
+
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+
+    {% block js %}{% endblock %}
+</body>
+</html>

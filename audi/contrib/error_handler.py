@@ -1,7 +1,7 @@
 # *-* coding: UTF-8 *-*
 from google.appengine.api import app_identity
 from google.appengine.api import taskqueue
-from audi.lib import jinja_bootstrap
+from audi.contrib import jinja_bootstrap
 
 import os
 import sys

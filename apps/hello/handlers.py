@@ -1,4 +1,4 @@
-from audi.lib.basehandler import BaseHandler
+from audi.core.handlers.base import BaseHandler
 
 
 class HelloHandler(BaseHandler):

@@ -1,4 +1,4 @@
-from audi import launcher
+from audi import Audi
 from settings import config
 
 import unittest
@@ -7,7 +7,7 @@ import webtest
 
 class AppTest(unittest.TestCase):
     def setUp(self):
-        app = launcher.create_app(config)
+        app = Audi.create_app(config)
         self.testapp = webtest.TestApp(app)
 
     def testHelloWorldHandler(self):

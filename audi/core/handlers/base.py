@@ -1,7 +1,7 @@
 # *-* coding: UTF-8 *-*
 from babel import Locale
 from webapp2_extras import jinja2, auth, sessions
-from audi.lib import utils, i18n, jinja_bootstrap
+from audi.contrib import utils, i18n, jinja_bootstrap
 
 import pytz
 import webapp2
@@ -22,21 +22,22 @@ class BaseHandler(webapp2.RequestHandler):
         self.session_store = None
 
     def dispatch(self):
-        self.session_store = sessions.get_store(request=self.request)
+        # self.session_store = sessions.get_store(request=self.request)
 
         try:
             # csrf protection
-            if self.request.method == 'POST':
-                token = self.session.get('csrf_token')
-                if not token or (token != self.request.get('csrf_token') and
-                    token != self.request.headers.get('csrf_token')):
-                    self.abort(403)
+            # if self.request.method == 'POST':
+            #     token = self.session.get('csrf_token')
+            #     if not token or (token != self.request.get('csrf_token') and
+            #         token != self.request.headers.get('csrf_token')):
+            #         self.abort(403)
 
             # Dispatch the request.
-            webapp2.RequestHandler.dispatch(self)
+            return webapp2.RequestHandler.dispatch(self)
         finally:
             # Save all sessions.
-            self.session_store.save_sessions(self.response)
+            # self.session_store.save_sessions(self.response)
+            pass
 
     @webapp2.cached_property
     def auth(self):

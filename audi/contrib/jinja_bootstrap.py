@@ -1,6 +1,6 @@
 from webapp2_extras import jinja2
 from webapp2_extras import sessions
-from audi.lib import utils
+from audi.contrib import utils
 
 import webapp2
 

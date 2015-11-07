@@ -1,8 +1,8 @@
-from webapp2_extras.routes import RedirectRoute
+from webapp2 import Route
 
 import handlers
 
 
 routes = [
-    RedirectRoute('/hello/', handlers.HelloHandler, name='hello', strict_slash=True),
+    Route('/hello/', handlers.HelloHandler, name='hello', methods=['GET']),
 ]

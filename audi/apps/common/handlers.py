@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from audi.contrib.basehandler import BaseHandler
+from audi.core.handlers.base import BaseHandler
 
 
 class RobotsHandler(BaseHandler):

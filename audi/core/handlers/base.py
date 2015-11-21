@@ -1,7 +1,8 @@
-# *-* coding: UTF-8 *-*
+# coding=utf-8
 from babel import Locale
-from webapp2_extras import jinja2, auth, sessions
+from webapp2_extras import jinja2
 from audi.contrib import utils, i18n, jinja_bootstrap
+from audi.contrib.auth import BaseAuthenticator
 
 import pytz
 import webapp2
@@ -19,49 +20,27 @@ class BaseHandler(webapp2.RequestHandler):
         super(BaseHandler, self).__init__(request, response)
         self.initialize(request, response)
         self.locale = i18n.set_locale(self, request)
-        self.session_store = None
+        self.authenticator = self.app.authenticator
+        self.auth_required = False
 
     def dispatch(self):
-        # self.session_store = sessions.get_store(request=self.request)
-
         try:
-            # csrf protection
-            # if self.request.method == 'POST':
-            #     token = self.session.get('csrf_token')
-            #     if not token or (token != self.request.get('csrf_token') and
-            #         token != self.request.headers.get('csrf_token')):
-            #         self.abort(403)
-
-            # Dispatch the request.
+            if self.auth_required:
+                if not self.authenticator.authenticate(self.request):
+                    self.abort(403)
             return webapp2.RequestHandler.dispatch(self)
         finally:
-            # Save all sessions.
-            # self.session_store.save_sessions(self.response)
             pass
 
-    @webapp2.cached_property
-    def auth(self):
-        return auth.get_auth()
+    def authenticate(self, request):
+        if self.authenticator and isinstance(self.authenticator, BaseAuthenticator):
+            return self.authenticator.authenticate(request)
+        return None
 
-    @webapp2.cached_property
-    def user(self):
-        return self.auth.get_user_by_session()
-
-    @webapp2.cached_property
-    def user_model(self):
-        return self.auth.store.user_model
-
-    @webapp2.cached_property
-    def user_id(self):
-        return str(self.user['user_id']) if self.user else None
-
-    @webapp2.cached_property
-    def session_store(self):
-        return sessions.get_store(request=self.request)
-
-    @webapp2.cached_property
-    def session(self):
-        return self.session_store.get_session()
+    def create_auth_token(self, email=None, expire=None):
+        if self.authenticator and isinstance(self.authenticator, BaseAuthenticator):
+            return self.authenticator.create_token(email, expire)
+        return None
 
     @webapp2.cached_property
     def language(self):
@@ -91,14 +70,6 @@ class BaseHandler(webapp2.RequestHandler):
         return tz
 
     @webapp2.cached_property
-    def get_user_tz(self):
-        user = self.current_user
-        if user:
-            if hasattr(user, 'tz') and user.tz:
-                return pytz.timezone(user.tz)
-        return pytz.timezone('UTC')
-
-    @webapp2.cached_property
     def countries(self):
         return Locale.parse(self.locale).territories if self.locale else []
 
@@ -111,13 +82,6 @@ class BaseHandler(webapp2.RequestHandler):
         countries.append(('', ''))
         countries.sort(key=lambda tup: tup[1])
         return countries
-
-    @webapp2.cached_property
-    def current_user(self):
-        user = self.auth.get_user_by_session()
-        if user:
-            return self.user_model.get_by_id(user['user_id'])
-        return None
 
     @webapp2.cached_property
     def is_mobile(self):

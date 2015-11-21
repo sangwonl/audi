@@ -27,10 +27,16 @@ config = {
     },
 
     # webapp2 sessions
-    'webapp2_extras.sessions': {'secret_key': ''},
+    # 'webapp2_extras.sessions': {'secret_key': ''},
 
     # webapp2 authentication
-    'webapp2_extras.auth': {'user_model': 'audi.apps.auth.models.User', 'cookie_name': 'session'},
+    # 'webapp2_extras.auth': {'user_model': 'audi.apps.auth.models.User', 'cookie_name': 'session'},
+
+    # auth token
+    'auth': {
+        'class': '',
+        'args': {}
+    },
 
     # jinja2 templates
     'webapp2_extras.jinja2': {
